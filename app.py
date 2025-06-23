@@ -141,11 +141,30 @@ st.markdown("""
 with st.sidebar:
     st.markdown("### 🤖 LibreChat")
     
-    # Основное меню
-    selected = option_menu(
+    # Инициализация состояния
+    if 'expanded_sections' not in st.session_state:
+        st.session_state.expanded_sections = {
+            'get_started': True,  # Открыт по умолчанию
+            'features': False,
+            'local_installation': False,
+            'remote_hosting': False,
+            'configuration': False,
+            'development': False,
+            'documentation': False
+        }
+    
+    if 'selected_page' not in st.session_state:
+        st.session_state.selected_page = 'Get Started'
+    
+    # Основное меню с возможностью раскрытия
+    main_menu_options = ["Get Started", "Features", "Local Installation", "Remote Hosting", "Configuration"]
+    main_menu_icons = ["play-circle", "star", "laptop", "cloud", "gear"]
+    
+    # Создаем основное меню
+    selected_main = option_menu(
         menu_title=None,
-        options=["Get Started", "Features", "Local Installation", "Remote Hosting", "Configuration", "User Guides", "Translation"],
-        icons=["play-circle", "star", "laptop", "cloud", "gear", "book", "translate"],
+        options=main_menu_options,
+        icons=main_menu_icons,
         menu_icon="cast",
         default_index=0,
         styles={
@@ -156,16 +175,160 @@ with st.sidebar:
         }
     )
     
+    # Подменю для каждой секции
+    if selected_main == "Get Started":
+        st.session_state.expanded_sections['get_started'] = True
+        with st.container():
+            sub_selected = option_menu(
+                menu_title=None,
+                options=["Overview", "Quick Start", "Setup Guide", "First Steps"],
+                icons=["house", "lightning", "tools", "1-circle"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "0!important", "background-color": "#f8fafc", "margin-left": "10px"},
+                    "icon": {"color": "#94a3b8", "font-size": "14px"}, 
+                    "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "padding-left": "20px", "--hover-color": "#e2e8f0"},
+                    "nav-link-selected": {"background-color": "#e0f2fe", "color": "#0369a1"},
+                }
+            )
+            if sub_selected == "Overview":
+                st.session_state.selected_page = 'Get Started'
+            elif sub_selected == "Quick Start":
+                st.session_state.selected_page = 'Quick Start'
+            elif sub_selected == "Setup Guide":
+                st.session_state.selected_page = 'Setup Guide'
+            elif sub_selected == "First Steps":
+                st.session_state.selected_page = 'First Steps'
+    
+    elif selected_main == "Features":
+        st.session_state.expanded_sections['features'] = True
+        with st.container():
+            sub_selected = option_menu(
+                menu_title=None,
+                options=["Overview", "AI Models", "Chat Features", "Plugins"],
+                icons=["star", "robot", "chat", "plug"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "0!important", "background-color": "#f8fafc", "margin-left": "10px"},
+                    "icon": {"color": "#94a3b8", "font-size": "14px"}, 
+                    "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "padding-left": "20px", "--hover-color": "#e2e8f0"},
+                    "nav-link-selected": {"background-color": "#e0f2fe", "color": "#0369a1"},
+                }
+            )
+            if sub_selected == "Overview":
+                st.session_state.selected_page = 'Features'
+            elif sub_selected == "AI Models":
+                st.session_state.selected_page = 'AI Models'
+            elif sub_selected == "Chat Features":
+                st.session_state.selected_page = 'Chat Features'
+            elif sub_selected == "Plugins":
+                st.session_state.selected_page = 'Plugins'
+    
+    elif selected_main == "Local Installation":
+        st.session_state.expanded_sections['local_installation'] = True
+        with st.container():
+            sub_selected = option_menu(
+                menu_title=None,
+                options=["Overview", "Docker", "NPM", "Helm Chart"],
+                icons=["laptop", "box", "package", "gear"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "0!important", "background-color": "#f8fafc", "margin-left": "10px"},
+                    "icon": {"color": "#94a3b8", "font-size": "14px"}, 
+                    "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "padding-left": "20px", "--hover-color": "#e2e8f0"},
+                    "nav-link-selected": {"background-color": "#e0f2fe", "color": "#0369a1"},
+                }
+            )
+            if sub_selected == "Overview":
+                st.session_state.selected_page = 'Local Installation'
+            elif sub_selected == "Docker":
+                st.session_state.selected_page = 'Docker'
+            elif sub_selected == "NPM":
+                st.session_state.selected_page = 'NPM'
+            elif sub_selected == "Helm Chart":
+                st.session_state.selected_page = 'Helm Chart'
+    
+    elif selected_main == "Remote Hosting":
+        st.session_state.expanded_sections['remote_hosting'] = True
+        with st.container():
+            sub_selected = option_menu(
+                menu_title=None,
+                options=["Overview", "Railway", "Heroku", "Azure"],
+                icons=["cloud", "train", "triangle", "microsoft"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "0!important", "background-color": "#f8fafc", "margin-left": "10px"},
+                    "icon": {"color": "#94a3b8", "font-size": "14px"}, 
+                    "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "padding-left": "20px", "--hover-color": "#e2e8f0"},
+                    "nav-link-selected": {"background-color": "#e0f2fe", "color": "#0369a1"},
+                }
+            )
+            if sub_selected == "Overview":
+                st.session_state.selected_page = 'Remote Hosting'
+            elif sub_selected == "Railway":
+                st.session_state.selected_page = 'Railway'
+            elif sub_selected == "Heroku":
+                st.session_state.selected_page = 'Heroku'
+            elif sub_selected == "Azure":
+                st.session_state.selected_page = 'Azure'
+    
+    elif selected_main == "Configuration":
+        st.session_state.expanded_sections['configuration'] = True
+        with st.container():
+            sub_selected = option_menu(
+                menu_title=None,
+                options=["Overview", "API Keys", "Custom Endpoints", "User Management"],
+                icons=["gear", "key", "link", "people"],
+                default_index=0,
+                styles={
+                    "container": {"padding": "0!important", "background-color": "#f8fafc", "margin-left": "10px"},
+                    "icon": {"color": "#94a3b8", "font-size": "14px"}, 
+                    "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "padding-left": "20px", "--hover-color": "#e2e8f0"},
+                    "nav-link-selected": {"background-color": "#e0f2fe", "color": "#0369a1"},
+                }
+            )
+            if sub_selected == "Overview":
+                st.session_state.selected_page = 'Configuration'
+            elif sub_selected == "API Keys":
+                st.session_state.selected_page = 'API Keys'
+            elif sub_selected == "Custom Endpoints":
+                st.session_state.selected_page = 'Custom Endpoints'
+            elif sub_selected == "User Management":
+                st.session_state.selected_page = 'User Management'
+    
     # Дополнительные разделы
     st.markdown("---")
-    st.markdown("**Development**")
-    st.markdown("**Documentation**")
+    
+    # Дополнительное меню
+    additional_menu = option_menu(
+        menu_title="Resources",
+        options=["Development", "Documentation", "Translation"],
+        icons=["code-slash", "book", "translate"],
+        default_index=0,
+        styles={
+            "container": {"padding": "0!important", "background-color": "transparent"},
+            "icon": {"color": "#64748b", "font-size": "16px"}, 
+            "nav-link": {"font-size": "14px", "text-align": "left", "margin":"0px", "--hover-color": "#f1f5f9"},
+            "nav-link-selected": {"background-color": "#dbeafe", "color": "#2563eb"},
+        }
+    )
+    
+    # Обработка дополнительного меню
+    if additional_menu == "Development":
+        st.session_state.selected_page = 'Development'
+    elif additional_menu == "Documentation":
+        st.session_state.selected_page = 'API Reference'
+    elif additional_menu == "Translation":
+        st.session_state.selected_page = 'Translation'
+    
     st.markdown("---")
     st.markdown("⚙️ System")
+    
+    # Получаем выбранную страницу
+    selected = st.session_state.selected_page
 
-# Основной контент
+# Основной контент - теперь с поддержкой всех страниц
 if selected == "Get Started":
-    # Заголовок страницы
     st.markdown('<h1 class="section-title">Get Started</h1>', unsafe_allow_html=True)
     
     # Quick Start Guides
@@ -265,15 +428,55 @@ if selected == "Get Started":
         </div>
         """, unsafe_allow_html=True)
 
+elif selected == "Quick Start":
+    st.markdown('<h1 class="section-title">📋 Quick Start</h1>', unsafe_allow_html=True)
+    st.markdown("### Get up and running in minutes")
+    st.markdown("1. Clone the repository")
+    st.markdown("2. Install dependencies")
+    st.markdown("3. Configure your environment")
+    st.markdown("4. Start the application")
+
+elif selected == "Setup Guide":
+    st.markdown('<h1 class="section-title">🔧 Setup Guide</h1>', unsafe_allow_html=True)
+    st.markdown("### Detailed setup instructions")
+    st.markdown("Complete walkthrough for setting up LibreChat")
+
+elif selected == "Documentation":
+    st.markdown('<h1 class="section-title">📖 Documentation</h1>', unsafe_allow_html=True)
+    st.markdown("### Complete documentation")
+    st.markdown("All the information you need to use LibreChat effectively")
+
 elif selected == "Features":
-    st.markdown('<h1 class="section-title">Features</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-title">⭐ Features</h1>', unsafe_allow_html=True)
     st.markdown("### 🚀 Powerful AI Chat Interface")
     st.markdown("- Multiple AI model support")
     st.markdown("- Real-time conversations")
     st.markdown("- Custom configurations")
 
+elif selected == "AI Models":
+    st.markdown('<h1 class="section-title">🤖 AI Models</h1>', unsafe_allow_html=True)
+    st.markdown("### Supported AI Models")
+    st.markdown("- OpenAI GPT models")
+    st.markdown("- Anthropic Claude")
+    st.markdown("- Google Bard")
+    st.markdown("- Custom models")
+
+elif selected == "Chat Features":
+    st.markdown('<h1 class="section-title">💬 Chat Features</h1>', unsafe_allow_html=True)
+    st.markdown("### Advanced Chat Capabilities")
+    st.markdown("- Message history")
+    st.markdown("- File uploads")
+    st.markdown("- Code syntax highlighting")
+
+elif selected == "Plugins":
+    st.markdown('<h1 class="section-title">🔌 Plugins</h1>', unsafe_allow_html=True)
+    st.markdown("### Extend Functionality")
+    st.markdown("- Web search plugin")
+    st.markdown("- Calculator plugin")
+    st.markdown("- Custom plugins")
+
 elif selected == "Local Installation":
-    st.markdown('<h1 class="section-title">Local Installation</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-title">💻 Local Installation</h1>', unsafe_allow_html=True)
     st.markdown("### 💻 Setup Instructions")
     st.code("""
 # Clone the repository
@@ -287,27 +490,114 @@ npm install
 npm start
     """)
 
+elif selected == "Docker":
+    st.markdown('<h1 class="section-title">🐳 Docker Installation</h1>', unsafe_allow_html=True)
+    st.markdown("### Using Docker")
+    st.code("""
+# Pull the image
+docker pull librechat/librechat
+
+# Run the container
+docker run -p 3080:3080 librechat/librechat
+    """)
+
+elif selected == "NPM":
+    st.markdown('<h1 class="section-title">📦 NPM Installation</h1>', unsafe_allow_html=True)
+    st.markdown("### Using NPM")
+    st.code("""
+npm install -g librechat
+librechat start
+    """)
+
+elif selected == "Helm Chart":
+    st.markdown('<h1 class="section-title">🔧 Helm Chart</h1>', unsafe_allow_html=True)
+    st.markdown("### Kubernetes Deployment")
+    st.code("""
+helm repo add librechat https://librechat.ai/helm
+helm install librechat librechat/librechat
+    """)
+
 elif selected == "Remote Hosting":
-    st.markdown('<h1 class="section-title">Remote Hosting</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-title">☁️ Remote Hosting</h1>', unsafe_allow_html=True)
     st.markdown("### ☁️ Cloud Deployment Options")
     st.markdown("- Docker deployment")
     st.markdown("- Railway hosting")
     st.markdown("- Heroku deployment")
 
+elif selected == "Railway":
+    st.markdown('<h1 class="section-title">🚂 Railway Deployment</h1>', unsafe_allow_html=True)
+    st.markdown("### Deploy to Railway")
+    st.markdown("1. Fork the repository")
+    st.markdown("2. Connect to Railway")
+    st.markdown("3. Deploy with one click")
+
+elif selected == "Heroku":
+    st.markdown('<h1 class="section-title">🔺 Heroku Deployment</h1>', unsafe_allow_html=True)
+    st.markdown("### Deploy to Heroku")
+    st.markdown("Step-by-step Heroku deployment guide")
+
+elif selected == "Azure":
+    st.markdown('<h1 class="section-title">☁️ Azure Deployment</h1>', unsafe_allow_html=True)
+    st.markdown("### Deploy to Microsoft Azure")
+    st.markdown("Azure Container Instances deployment")
+
 elif selected == "Configuration":
-    st.markdown('<h1 class="section-title">Configuration</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-title">⚙️ Configuration</h1>', unsafe_allow_html=True)
     st.markdown("### ⚙️ Customize Your Setup")
     st.markdown("Configure your LibreChat instance with custom settings.")
 
-elif selected == "User Guides":
-    st.markdown('<h1 class="section-title">User Guides</h1>', unsafe_allow_html=True)
-    st.markdown("### 📚 Step-by-Step Tutorials")
-    st.markdown("Comprehensive guides to help you get the most out of LibreChat.")
+elif selected == "API Keys":
+    st.markdown('<h1 class="section-title">🔑 API Keys</h1>', unsafe_allow_html=True)
+    st.markdown("### Managing API Keys")
+    st.markdown("How to configure and manage your API keys securely")
+
+elif selected == "Custom Endpoints":
+    st.markdown('<h1 class="section-title">🎨 Custom Endpoints</h1>', unsafe_allow_html=True)
+    st.markdown("### Setting up Custom Endpoints")
+    st.markdown("Configure custom API endpoints for your models")
+
+elif selected == "User Management":
+    st.markdown('<h1 class="section-title">👤 User Management</h1>', unsafe_allow_html=True)
+    st.markdown("### Managing Users")
+    st.markdown("User authentication and authorization setup")
+
+elif selected == "Development":
+    st.markdown('<h1 class="section-title">🛠️ Development</h1>', unsafe_allow_html=True)
+    st.markdown("### Development Guide")
+    st.markdown("Information for developers contributing to LibreChat")
+
+elif selected == "Contributing":
+    st.markdown('<h1 class="section-title">🔧 Contributing</h1>', unsafe_allow_html=True)
+    st.markdown("### How to Contribute")
+    st.markdown("Guidelines for contributing to the project")
+
+elif selected == "Testing":
+    st.markdown('<h1 class="section-title">🧪 Testing</h1>', unsafe_allow_html=True)
+    st.markdown("### Testing Guide")
+    st.markdown("How to run tests and contribute test cases")
+
+elif selected == "First Steps":
+    st.markdown('<h1 class="section-title">🚀 First Steps</h1>', unsafe_allow_html=True)
+    st.markdown("### Your first steps with LibreChat")
+    st.markdown("1. Create your first chat")
+    st.markdown("2. Configure AI models")
+    st.markdown("3. Explore features")
+    st.markdown("4. Join the community")
+
+elif selected == "API Reference":
+    st.markdown('<h1 class="section-title">📖 API Reference</h1>', unsafe_allow_html=True)
+    st.markdown("### Complete API Documentation")
+    st.markdown("Detailed API reference with examples")
 
 elif selected == "Translation":
-    st.markdown('<h1 class="section-title">Translation</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="section-title">🌍 Translation</h1>', unsafe_allow_html=True)
     st.markdown("### 🌍 Internationalization")
     st.markdown("Help translate LibreChat into your language.")
+
+elif selected == "FAQ":
+    st.markdown('<h1 class="section-title">❓ FAQ</h1>', unsafe_allow_html=True)
+    st.markdown("### Frequently Asked Questions")
+    st.markdown("Common questions and answers about LibreChat")
 
 # Правая панель "On This Page"
 with st.sidebar:
